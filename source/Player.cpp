@@ -22,6 +22,7 @@ Player::Player()
 	this->iTopMovementExtreme = 0;
 	this->iBottomeMovementExtreme = 0;
 	this->fPlayerVel = 0;
+	this->iLives = 0;
 
 }
 
@@ -43,6 +44,7 @@ Player::Player(int a_iSpriteID)
 	this->iTopMovementExtreme = 770;
 	this->iBottomeMovementExtreme = 10;
 	this->fPlayerVel = .25f;
+	this->iLives = 3;
 
 	
 }
@@ -59,7 +61,7 @@ void Player::Shoot(unsigned int iBulletSpriteID)
 void Player::PlayerDeath()
 {
 //	char *cHighScore = ""; 
-	char *cHighScore;
+	char *cHighScore = " ";
 	int iHighScore = 0;
 	std::ifstream input("Highscores.txt");
 
