@@ -3,12 +3,14 @@ class Bullet
 {
 public:
 	Bullet();
-	Bullet(int a_iSpriteID);
+	Bullet(int iBulletSpriteID);
 	~Bullet();
 
-	unsigned int iSpriteID;
+	unsigned int iBulletSpriteID;
 	float fPositionX;
 	float fPositionY;
+	float fMaxBulHeight;
+	float fLowBulHeight;
 	
 	float fVelocityX;
 	float fVelocityY;
@@ -18,6 +20,7 @@ public:
 	void Update(float fDeltaT);
 	void Draw();
 	void InitialiseBullet(float fPositionX, float fPositionY, float fVelocityX, float fVelocityY, unsigned int iSpriteID);
+	void Destroy();
 
 };
 

@@ -1,5 +1,7 @@
 #include "Player.h"
 #include "AIE.h"
+#include <fstream>
+#include <iostream>
 
 
 Player::Player()
@@ -12,6 +14,15 @@ Player::Player()
 	this->iMoveUpKey = 0;
 	this->iMoveDownKey = 0;
 	this->iShootKey = 0;
+	this->fMaxReloadTime = .5f;
+	this->fCurrentReloadTime = 0;
+	this->iScore = 0;
+	this->iLeftMovementExtreme = 0;
+	this->iRightMovementExtreme = 0;
+	this->iTopMovementExtreme = 0;
+	this->iBottomeMovementExtreme = 0;
+	this->fPlayerVel = 0;
+
 }
 
 Player::Player(int a_iSpriteID)
@@ -19,15 +30,48 @@ Player::Player(int a_iSpriteID)
 	this->iSpriteID = a_iSpriteID;
 	this->fPositionX = 10;
 	this->fPositionY = 10;
+	this->iMoveLeftKey = 'A';
+	this->iMoveRightKey = 'D';
+	this->iMoveUpKey = 'W';
+	this->iMoveDownKey = 'S';
+	this->iShootKey = KEY_SPACE;
+	this->fMaxReloadTime = .5f;
+	this->fCurrentReloadTime = 0;
+	this->iScore = 0;
+	this->iLeftMovementExtreme = 10;
+	this->iRightMovementExtreme = 662;
+	this->iTopMovementExtreme = 770;
+	this->iBottomeMovementExtreme = 10;
+	this->fPlayerVel = .25f;
+
 	
 }
 
-void Player::Shoot(unsigned int a_iSpriteID, float fDeltaT)
+void Player::Shoot(unsigned int iBulletSpriteID)
 {
-	if(IsKeyDown(KEY_SPACE))
+	if(IsKeyDown(iShootKey) && fCurrentReloadTime >= fMaxReloadTime)
 	{
-		GetInactiveBullet().InitialiseBullet(fPositionX, fPositionY, 0, 50, iSpriteID);
+		GetInactiveBullet().InitialiseBullet(fPositionX, fPositionY, 0, 250, iBulletSpriteID);
+		fCurrentReloadTime = 0;
 	}
+}
+
+void Player::PlayerDeath()
+{
+//	char *cHighScore = ""; 
+	char *cHighScore;
+	int iHighScore = 0;
+	std::ifstream input("Highscores.txt");
+
+	if( input )
+	{
+		input.getline(cHighScore, 256);
+
+		iHighScore = atoi (cHighScore);
+	}
+
+	std::cout << iHighScore << std::endl;
+	
 }
 
 Bullet& Player::GetInactiveBullet()
@@ -55,36 +99,38 @@ void Player::Draw()
 
 }
 
-void Player::Update()
+void Player::Update(float fDeltaT)
 {
-	if(IsKeyDown ('A'))
+	fCurrentReloadTime += fDeltaT;
+
+	if(IsKeyDown (iMoveLeftKey))
 	{
-		fPositionX -= .1f;
-		if( fPositionX <= 10)
+		fPositionX -= fPlayerVel;
+		if( fPositionX <= iLeftMovementExtreme)
 		{
 			fPositionX = 10.f;
 		}
 	}
-	if( IsKeyDown ('D'))
+	if( IsKeyDown (iMoveRightKey))
 	{
-		fPositionX += .1f;
-		if( fPositionX >= 662)
+		fPositionX += fPlayerVel;
+		if( fPositionX >= iRightMovementExtreme)
 		{
 			fPositionX = 662.f;
 		}
 	}
-	if(IsKeyDown ('W'))
+	if(IsKeyDown (iMoveUpKey))
 	{
-		fPositionY += .1f;
-		if( fPositionY >= 770)
+		fPositionY += fPlayerVel;
+		if( fPositionY >= iTopMovementExtreme)
 		{
 			fPositionY = 770.f;
 		}
 	}
-	if(IsKeyDown ('S'))
+	if(IsKeyDown (iMoveDownKey))
 	{
-		fPositionY -= .1f;
-		if( fPositionY <= 10)
+		fPositionY -= fPlayerVel;
+		if( fPositionY <= iBottomeMovementExtreme)
 		{
 			fPositionY = 10.f;
 		}
