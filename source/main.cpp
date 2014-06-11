@@ -245,6 +245,10 @@ void UpdateGameState()
 	{
 		PlayerController.PlayerDeath();
 	}
+	if(PlayerController.iLives == 0 )
+	{
+		PlayerController.PlayerDeath();
+	}
 	
 	
 

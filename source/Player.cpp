@@ -61,10 +61,11 @@ void Player::Shoot(unsigned int iBulletSpriteID)
 void Player::PlayerDeath()
 {
 //	char *cHighScore = ""; 
-	char *cHighScore = " ";
+	char *cHighScore;
+
 	int iHighScore = 0;
 	std::ifstream input("Highscores.txt");
-
+	std::cin >> cHighScore;
 	if( input )
 	{
 		input.getline(cHighScore, 256);
